@@ -1,0 +1,12 @@
+@theme {
+  --text-heading-md: clamp(2.125rem, 1.7772rem + 1.7391vw, 3.125rem);
+}
+
+@utility heading-md {
+  font-size: var(--text-heading-md);
+  font-family: var(--font-sans);
+  letter-spacing: -0.06em;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.15;
+}
