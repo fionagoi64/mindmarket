@@ -39,10 +39,12 @@ export const HoverSection = ({
   const finalButton: TAnimatedButton = {
     ...defaultButton,
     ...button,
-    button: {
-      ...defaultButton.button,
-      ...button?.button,
-    },
+    button: button?.button
+      ? {
+          ...defaultButton.button,
+          ...button.button,
+        }
+      : defaultButton.button,
     arrow: {
       ...defaultButton.arrow,
       ...button?.arrow,

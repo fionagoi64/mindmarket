@@ -28,7 +28,7 @@ export const TextReveal = ({
 }: {
   paragraph: string;
   className?: string;
-  offset?: Parameters<typeof useScroll>[0]["offset"];
+  offset?: NonNullable<Parameters<typeof useScroll>[0]>["offset"];
 }) => {
   const containerRef = useRef<HTMLParagraphElement>(null);
 
