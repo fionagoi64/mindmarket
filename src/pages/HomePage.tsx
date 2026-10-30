@@ -6,7 +6,7 @@ export const HomePage = () => {
   return (
     <StackingLayout
       hasOverlay
-      backgroundColor="#8DD462"
+      backgroundColor="#8ED462"
       heroSection={
         <CenterTitleHero
           title="Real human\ninsights"

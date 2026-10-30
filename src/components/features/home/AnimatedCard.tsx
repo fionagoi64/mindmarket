@@ -1,90 +1,90 @@
-import {
-  AnimatedButton,
-  type TAnimatedButton,
-} from "@/components/shared/AnimatedButton";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
+
+type TCardColor = "red" | "yellow" | "blue" | "pink";
 
 type TAnimatedCard = {
   title: string;
   desc: string;
-  to: TAnimatedButton["to"];
-  button?: TAnimatedButton["button"];
+  to: string;
+  buttonLabel?: string;
+  color?: TCardColor;
 };
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-} as const;
+const COLOR_MAP: Record<TCardColor, { bgVar: string; btnClass: string }> = {
+  red: { bgVar: "var(--color-red)", btnClass: "button-red" },
+  yellow: { bgVar: "var(--color-yellow)", btnClass: "button-yellow" },
+  blue: { bgVar: "var(--color-blue)", btnClass: "button-blue" },
+  pink: { bgVar: "var(--color-pink)", btnClass: "button-pink" },
+};
 
-const layerVariants = {
-  hidden: { scale: 0.8, opacity: 0 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: [0.175, 0.885, 0.32, 1.1],
-    },
-  },
-} as const;
+const ArrowRightSvg = () => (
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 20 20"
+    className="svg-arrow-right"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path fill="none" d="m8 14 4-4-4-4" />
+  </svg>
+);
 
 export const AnimatedCard = ({
   title,
   desc,
   to,
-  button,
+  buttonLabel = "Services",
+  color = "red",
 }: TAnimatedCard) => {
   const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  // Maps scroll progress through viewport to y translation.
-  // By using [80, -80], when scrolling down (progress 0 -> 1), y changes from positive (down) to negative (up).
-  // This causes the card to move UP faster than the page scroll.
-  // When scrolling up (progress 1 -> 0), y changes from negative to positive, causing the card to move DOWN.
-  const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
+  const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const { bgVar, btnClass } = COLOR_MAP[color];
 
   return (
     <motion.div
       ref={ref}
       style={{ y }}
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.5 }}
-      className="relative w-full max-w-137 aspect-4/3 flex items-center justify-center"
+      className="c-homepage-timeline-cards"
     >
-      <motion.div
-        variants={layerVariants}
-        className="absolute inset-0 bg-coral shadow-lg"
-      />
-
-      <motion.div
-        variants={layerVariants}
-        className="absolute inset-0 bg-white p-10 shadow-xl flex flex-col justify-center space-y-4"
-      >
-        <h2 className="text-4xl font-bold text-gray-900">
-          {title}
-        </h2>
-        <p className="text-gray-600 text-xl">
-          {desc}
-        </p>
-        <div className="pt-2">
-          <AnimatedButton
-            to={to}
-            button={button}
-          />
+      <div className={`c-tile-animated ${isInView ? "is-inview" : ""}`}>
+        <div
+          className="c-tile-animated_bg -colored"
+          style={{ "--color-bg": bgVar } as React.CSSProperties}
+        />
+        <div className="c-tile-animated_bg -white" />
+        <div className="c-tile-animated_inner">
+          <h3 className="c-tile-animated_title">{title}</h3>
+          <p className="c-tile-animated_description">{desc}</p>
+          <div className="c-tile-animated_cta">
+            <Link
+              to={to}
+              className={`c-button ${btnClass} button-primary`}
+            >
+              <span className="c-button_icon -hover">
+                <span className="c-icon">
+                  <ArrowRightSvg />
+                </span>
+              </span>
+              <span className="c-button_label">{buttonLabel}</span>
+              <span className="c-button_icon -default">
+                <span className="c-icon">
+                  <ArrowRightSvg />
+                </span>
+              </span>
+            </Link>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 };
