@@ -1,11 +1,6 @@
-import { Link, type To } from "react-router-dom";
-
-export const Logo = ({ to }: { to: To }) => {
+export const Logo = () => {
   return (
-    <Link
-      to={to}
-      className="flex items-center gap-2.5 cursor-pointer"
-    >
+    <div className="flex items-center gap-2.5 cursor-pointer">
       <img
         src="/images/logo.svg"
         alt="MindMarket logo"
@@ -16,6 +11,6 @@ export const Logo = ({ to }: { to: To }) => {
         alt="MindMarket text"
         className="w-32 h-auto"
       />
-    </Link>
+    </div>
   );
 };

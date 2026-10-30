@@ -1,19 +1,16 @@
-import { ROUTE } from "@/constants/route";
 import { Avatar } from "@/layouts/navbar/Avatar";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 export const GetQuoteButton = () => {
-  const [isHovered, setIsHovered] =
-    useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Link
-      to={ROUTE.CONTACT_US}
+    <button
+      type="button"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative flex items-center rounded-base h-full px-4 cursor-pointer gap-2.5 overflow-hidden border border-gray-100"
+      className="relative flex items-center rounded-base h-full px-4 cursor-pointer gap-2.5 overflow-hidden"
     >
       {/* 1. Base Layer (Background of the button) */}
       <div className="absolute inset-0 bg-white -z-20" />
@@ -23,9 +20,7 @@ export const GetQuoteButton = () => {
         className="absolute inset-0 bg-yellow -z-10 rounded-t-base"
         initial={{ scale: 0, opacity: 0 }}
         animate={
-          isHovered
-            ? { scale: 1, opacity: 1 }
-            : { scale: 0, opacity: 0 }
+          isHovered ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
         }
         style={{
           originY: 1, // Anchors to bottom
@@ -39,10 +34,8 @@ export const GetQuoteButton = () => {
       />
 
       {/* 3. Content */}
-      <span className="relative font-semibold text-gray-700">
-        Get a quote
-      </span>
+      <span className="relative font-semibold text-gray-700">Get a quote</span>
       <Avatar isHovered={isHovered} />
-    </Link>
+    </button>
   );
 };

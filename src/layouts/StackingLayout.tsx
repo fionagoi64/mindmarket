@@ -16,36 +16,41 @@ export const StackingLayout = ({
 }: TStackingLayout) => {
   const { scrollY } = useScroll();
 
-  // Scale and fade the hero over the first 600px of scrolling
-  const heroScale = useTransform(scrollY, [0, 600], [1, 0.9]);
-  const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
+  // Scale the hero from 1 to 0.8 over the first viewport of scrolling
+  const heroScale = useTransform(scrollY, [0, 800], [1, 0.8]);
 
-  // Black overlay fading from transparent (0) to 60% opacity (0.6) as the user scrolls
-  const overlayOpacity = useTransform(scrollY, [0, 600], [0, 0.3]);
+  // Charcoal overlay fading from transparent (0) to 40% opacity (0.4) as the user scrolls
+  const overlayOpacity = useTransform(scrollY, [0, 800], [0, 0.4]);
 
   return (
-    <div className="relative w-full">
-      {/* HERO - sticky in background */}
-      <div
-        className="sticky top-0 h-svh w-full overflow-hidden z-1 pointer-events-none"
-        style={{ backgroundColor }}
-      >
-        <motion.section
-          className="w-full h-full pt-36"
-          style={{
-            scale: heroScale,
-            opacity: heroOpacity,
-          }}
-        >
-          <div className="pointer-events-auto h-full w-full">{heroSection}</div>
-        </motion.section>
+    <div className="relative w-full bg-[#F4F1E4]">
+      {/* Spacer in normal flow */}
+      <div className="h-svh w-full pointer-events-none" />
 
-        {hasOverlay && (
-          <motion.div
-            style={{ opacity: overlayOpacity }}
-            className="absolute inset-0 bg-black pointer-events-none z-10"
-          />
-        )}
+      {/* HERO - sticky in background for the top 200svh */}
+      <div className="absolute top-0 left-0 w-full h-[200svh] z-1 pointer-events-none">
+        <div
+          className="sticky top-0 h-svh w-full overflow-hidden"
+          style={{ backgroundColor }}
+        >
+          <motion.section
+            className="w-full h-full pt-24 md:pt-36 max-md:!scale-100"
+            style={{
+              scale: heroScale,
+            }}
+          >
+            <div className="pointer-events-auto h-full w-full">
+              {heroSection}
+            </div>
+          </motion.section>
+
+          {hasOverlay && (
+            <motion.div
+              style={{ opacity: overlayOpacity }}
+              className="absolute inset-0 bg-[#2c2e2a] pointer-events-none z-10 max-md:hidden"
+            />
+          )}
+        </div>
       </div>
 
       {/* CONTENT - scrolls over hero */}
