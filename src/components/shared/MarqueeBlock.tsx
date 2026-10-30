@@ -61,9 +61,9 @@ export const MarqueeRow = ({
   });
 
   return (
-    <div className="relative w-full overflow-hidden py-2">
+    <div className="relative w-full overflow-hidden">
       <motion.div
-        className={`flex gap-6 min-w-full cursor-pointer ${className}`}
+        className={`flex gap-4 w-max cursor-pointer ${className}`}
         style={{ x }}
       >
         {children}
